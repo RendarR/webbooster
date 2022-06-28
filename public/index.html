@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>The modal demo</title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type="text/javascript" src="../src/js/jquery.the-modal.js"></script>
+    <link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/bootstrap.min.css" media="all">
+    <link rel="stylesheet" type="text/css" href="../src/style/index.css" media="all">
+</head>
+<body>
+<!-- this one is to test facebook modals, not related to the modal itself  -->
+<div id="fb-root"></div>
+<script src="http://connect.facebook.net/en_US/all.js"></script>
+<script>
+    FB.init({
+        appId  : '332448306836974',
+        status : true,
+        cookie : true,
+        xfbml  : true
+    });
+
+    jQuery(function($){
+        $('.facebook-modal').click(function(e){
+            e.preventDefault();
+
+            FB.login(function(response) {
+                if (response.status == 'connected') {
+                    var scroll = $(window).scrollTop();
+                    FB.ui(
+                        {
+                            method: 'feed',
+                            name: 'Facebook Dialogs',
+                            link: 'http://developers.facebook.com/docs/reference/dialogs/',
+                            picture: 'http://fbrell.com/f8.jpg',
+                            caption: 'Reference Documentation',
+                            description: 'Dialogs provide a simple, consistent interface for applications to interface with users.',
+                            display: 'dialog'
+                        },
+                        function(response) {
+                            $(window).scrollTop(scroll);
+                            if (response && response.post_id) {
+                                alert('Post was published.');
+                            } else {
+                                alert('Post was not published.');
+                            }
+                        }
+                    );
+                }
+            });
+        });
+    });
+</script>
+<div class="conteiner-fluid bg-danger">
+    <div class="fs-1 text text-white">Вашему вниманию представленны модальные окна</div>
+    <div class="fs-3 text text-white">Выберите модальное окно</div>
+</div>
+<div class="modal modal-signin position-static d-block py-5" id="test-modal" tabindex="-1" role="dialog" style="display: none!important;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content rounded-5 shadow">
+            <div class="modal-header p-5 pb-4 border-bottom-0">
+                <!-- <h5 class="modal-title">Modal title</h5> -->
+                <h2 class="fw-bold mb-0">Форма модального окна</h2>
+                <button type="button" class="btn-close close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body p-5 pt-0">
+                <form class="">
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control rounded-4" id="name" placeholder="Имя">
+                        <label for="name">Имя</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control rounded-4" id="phone" placeholder="Телефон">
+                        <label for="phone">Телефон</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control rounded-4" id="nametarget" placeholder="Название товара">
+                        <label for="nametarget">Название товара</label>
+                    </div>
+                    <button class="w-100 mb-2 btn btn-lg rounded-4 btn-primary" type="submit">Заказать</button>
+                    <small class="text-muted">Bootstrap выручил ))))</small>
+                    <hr class="my-4">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ol>
+    <div class="conteiner">
+        <button type="button" class="btn btn-danger trigger">Модальное окно</button>
+        <button type="button" class="btn btn-warning trigger">Модальное окно</button>
+        <button type="button" class="btn btn-info trigger">Модальное окно</button>
+        <button type="button" class="btn btn-dark trigger">Модальное окно</button>
+    </div>
+</ol>
+
+<script type="text/javascript">
+    jQuery(function($){
+        // bind event handlers to modal triggers
+        $('body').on('click', '.trigger', function(e){
+            e.preventDefault();
+            $('#test-modal').modal().open();
+        });
+
+        // attach modal close handler
+        $('.modal .close').on('click', function(e){
+            e.preventDefault();
+            $.modal().close();
+        });
+
+        // below isn't important (demo-specific things)
+        $('.modal .more-toggle').on('click', function(e){
+            e.stopPropagation();
+            $('.modal .more').toggle();
+        });
+    });
+</script>
+</body>
+</html>

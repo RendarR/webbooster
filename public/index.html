@@ -1,121 +1,102 @@
 <!doctype html>
-<html>
+<html lang="ru">
 <head>
-    <meta charset="utf-8" />
-    <title>The modal demo</title>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script type="text/javascript" src="../src/js/jquery.the-modal.js"></script>
-    <link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/bootstrap.min.css" media="all">
-    <link rel="stylesheet" type="text/css" href="../src/style/index.css" media="all">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>WebBooster</title>
+    <link rel="stylesheet" href="../src/style/index.css">
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
 </head>
 <body>
-<!-- this one is to test facebook modals, not related to the modal itself  -->
-<div id="fb-root"></div>
-<script src="http://connect.facebook.net/en_US/all.js"></script>
-<script>
-    FB.init({
-        appId  : '332448306836974',
-        status : true,
-        cookie : true,
-        xfbml  : true
-    });
-
-    jQuery(function($){
-        $('.facebook-modal').click(function(e){
-            e.preventDefault();
-
-            FB.login(function(response) {
-                if (response.status == 'connected') {
-                    var scroll = $(window).scrollTop();
-                    FB.ui(
-                        {
-                            method: 'feed',
-                            name: 'Facebook Dialogs',
-                            link: 'http://developers.facebook.com/docs/reference/dialogs/',
-                            picture: 'http://fbrell.com/f8.jpg',
-                            caption: 'Reference Documentation',
-                            description: 'Dialogs provide a simple, consistent interface for applications to interface with users.',
-                            display: 'dialog'
-                        },
-                        function(response) {
-                            $(window).scrollTop(scroll);
-                            if (response && response.post_id) {
-                                alert('Post was published.');
-                            } else {
-                                alert('Post was not published.');
-                            }
-                        }
-                    );
-                }
-            });
-        });
-    });
-</script>
-<div class="conteiner-fluid bg-danger">
-    <div class="fs-1 text text-white">Вашему вниманию представленны модальные окна</div>
-    <div class="fs-3 text text-white">Выберите модальное окно</div>
-</div>
-<div class="modal modal-signin position-static d-block py-5" id="test-modal" tabindex="-1" role="dialog" style="display: none!important;">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content rounded-5 shadow">
-            <div class="modal-header p-5 pb-4 border-bottom-0">
-                <!-- <h5 class="modal-title">Modal title</h5> -->
-                <h2 class="fw-bold mb-0">Форма модального окна</h2>
-                <button type="button" class="btn-close close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <div class="modal-body p-5 pt-0">
-                <form class="">
-                    <div class="form-floating mb-3">
-                        <input type="email" class="form-control rounded-4" id="name" placeholder="Имя">
-                        <label for="name">Имя</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="password" class="form-control rounded-4" id="phone" placeholder="Телефон">
-                        <label for="phone">Телефон</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="password" class="form-control rounded-4" id="nametarget" placeholder="Название товара">
-                        <label for="nametarget">Название товара</label>
-                    </div>
-                    <button class="w-100 mb-2 btn btn-lg rounded-4 btn-primary" type="submit">Заказать</button>
-                    <small class="text-muted">Bootstrap выручил ))))</small>
-                    <hr class="my-4">
-                </form>
+    <header>
+        <div class="navbar navbar-dark bg-dark shadow-sm">
+            <div class="container">
+                <a href="#" class="navbar-brand d-flex align-items-center"> ВЫБЕРИТЕ ТОВАР</a>
             </div>
         </div>
-    </div>
-</div>
+    </header>
+    <main>
+        <div class="album py-5 bg-light">
+            <div class="container container-btn">
+                <div class="button">
+                    <button type="button" class="btn btn-lg btn-outline-secondary"> Оставить заявку</button>
+                </div>
+                <div class="modal-window" style="display:">
+                    <form class="modal-window__window">
+                        <p class="modal-window__p">
+                            <label for="input">Введите ваше имя:</label>
+                            <input type="text" id="input" placeholder="Ф.И.О.">
+                        </p>
+                        <p class="modal-window__p">
+                            <label for="tel">Пример телефона:</label>
+                            <input type="tel" id="tel" placeholder="+79876543210">
+                        </p>
+                        <p class="modal-window__p">
+                            <label for="nameTarget">Название товара:</label>
+                            <input type="text" id="nameTarget" placeholder="Название товара">
+                        </p>
+                        <div class="button">
+                            <button type="button" class="btn btn-lg btn-outline-secondary"> Оставить заявку</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 boxHtml container-center" id="box">
+                    <script>
+                        // Простенькая ШТМЛка чтоб не захломлять с простым циклом
+                        //Юзаю бутсрап
+                        //Можно подвязать с гита все такста и картинки
+                        let col = {
+                            arr:[],
+                            url: 'https://raw.githubusercontent.com/RendarR/Other/master/catalog.json',
+                            items:[],
+                            _get(url) {
+                                return fetch(url).then(d => d.json());
+                            },
+                            getItem(){
+                                this._get(this.url)
+                                    .then(arr => {
+                                        this.items = arr;
+                                    })
+                                    .finally(() => {
+                                        this.items.forEach(item => {
+                                            console.log(item)
+                                            item.productImg = this.arr
+                                                this.box.innerHTML += this.htmlText
+                                            }
+                                        )
+                                    })
+                            },
 
-<ol>
-    <div class="conteiner">
-        <button type="button" class="btn btn-danger trigger">Модальное окно</button>
-        <button type="button" class="btn btn-warning trigger">Модальное окно</button>
-        <button type="button" class="btn btn-info trigger">Модальное окно</button>
-        <button type="button" class="btn btn-dark trigger">Модальное окно</button>
-    </div>
-</ol>
-
-<script type="text/javascript">
-    jQuery(function($){
-        // bind event handlers to modal triggers
-        $('body').on('click', '.trigger', function(e){
-            e.preventDefault();
-            $('#test-modal').modal().open();
-        });
-
-        // attach modal close handler
-        $('.modal .close').on('click', function(e){
-            e.preventDefault();
-            $.modal().close();
-        });
-
-        // below isn't important (demo-specific things)
-        $('.modal .more-toggle').on('click', function(e){
-            e.stopPropagation();
-            $('.modal .more').toggle();
-        });
-    });
-</script>
+                            box: document.getElementById('box'),
+                            render(){
+                                this.getItem();
+                            },
+                            htmlText:
+                                `<div class="col">
+                                    <div class="card shadow-sm">
+                                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Эскиз" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="45%" y="50%" fill="#eceeef" dy=".3em">
+                                        </svg>
+                                        <div class="card-body shadow-drop-2-center">
+                                            <p class="card-text">Наведи и получи небольшую Анимашку при помощи Animista</p>
+                                            <div class="d-flex justify-content-between align-items-center">
+<!--                                                <div class="btn-group">-->
+<!--                                                    <button type="button" class="btn btn-sm btn-outline-secondary">Заказать</button>-->
+<!--                                                </div>-->
+                                                <small class="text-muted">9 mins</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`
+                        };
+                        col.render();
+                    </script>
+                </div>
+            </div>
+        </div>
+    </main>
 </body>
 </html>

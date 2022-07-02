@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>WebBooster</title>
     <link rel="stylesheet" href="../src/style/index.css">
+    <script src="../node_modules/jquery/dist/jquery.js"></script>
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
 </head>
 <body>
@@ -20,10 +21,10 @@
     <main>
         <div class="album py-5 bg-light">
             <div class="container container-btn">
-                <div class="button">
-                    <button type="button" class="btn btn-lg btn-outline-secondary"> Оставить заявку</button>
+                <div class="button" >
+                    <button type="button" class="btn btn-lg btn-outline-secondary" id="modal-window-hide" onclick="$('#modal-window').hide()"> Оставить заявку</button>
                 </div>
-                <div class="modal-window" style="display:">
+                <div class="modal-window" id="modal-window">
                     <form class="modal-window__window">
                         <p class="modal-window__p">
                             <label for="input">Введите ваше имя:</label>
